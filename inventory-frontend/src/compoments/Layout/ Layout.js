@@ -11,6 +11,8 @@ import {
 import Sidebar from '../Sidebar/Sidebar';
 import Header from '../Header/Header';
 import Dashboard from '../Dashboard/Dashboard';
+import Products from '../../ pages/Products/Product';
+import Categories from '../../ pages/Categories/Categories';
 import './Layout.css';
 
 const Layout = () => {
@@ -32,9 +34,9 @@ const Layout = () => {
             case 'dashboard':
                 return <Dashboard />;
             case 'products':
-                return <ProductsPlaceholder />;
+                return <Products />;
             case 'categories':
-                return <CategoriesPlaceholder />;
+                return <Categories />;
             default:
                 return <Dashboard />;
         }
@@ -63,20 +65,5 @@ const Layout = () => {
         </div>
     );
 };
-
-// Placeholder components
-const ProductsPlaceholder = () => (
-    <div className="placeholder">
-        <h3 className="placeholder__title">Quản lý sản phẩm</h3>
-        <p className="placeholder__text">Chức năng quản lý sản phẩm sẽ được phát triển ở bước tiếp theo.</p>
-    </div>
-);
-
-const CategoriesPlaceholder = () => (
-    <div className="placeholder">
-        <h3 className="placeholder__title">Quản lý danh mục</h3>
-        <p className="placeholder__text">Chức năng quản lý danh mục sẽ được phát triển ở bước tiếp theo.</p>
-    </div>
-);
 
 export default Layout;
