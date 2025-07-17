@@ -325,3 +325,239 @@ export const getStockInStatusColor = (status) => {
             return 'primary';
     }
 };
+export const stockOutRecords = [
+    {
+        id: 1,
+        employee_id: 2,
+        employee_name: 'Nguyễn Thị Hoa',
+        customer_name: 'Công ty DEF',
+        invoice_number: 'PX001',
+        total_amount: 15045000,
+        notes: 'Khách lẻ',
+        status: 'completed',
+        created_at: '2024-07-15T14:30:00Z',
+        details: [
+            {
+                id: 1,
+                product_id: 1,
+                product_name: 'Laptop Dell Inspiron 15',
+                product_code: 'DELL001',
+                quantity: 1,
+                unit_price: 15000000,
+                total_price: 15000000
+            },
+            {
+                id: 2,
+                product_id: 2,
+                product_name: 'Cà phê hòa tan G7',
+                product_code: 'COFFEE001',
+                quantity: 1,
+                unit_price: 45000,
+                total_price: 45000
+            }
+        ]
+    },
+    {
+        id: 2,
+        employee_id: 3,
+        employee_name: 'Trần Văn Nam',
+        customer_name: 'Khách lẻ',
+        invoice_number: 'PX002',
+        total_amount: 150000,
+        notes: 'Khách lẻ',
+        status: 'completed',
+        created_at: '2024-07-16T09:15:00Z',
+        details: [
+            {
+                id: 3,
+                product_id: 3,
+                product_name: 'Bút bi Thiên Long',
+                product_code: 'PEN001',
+                quantity: 50,
+                unit_price: 3000,
+                total_price: 150000
+            }
+        ]
+    },
+    {
+        id: 3,
+        employee_id: 1,
+        employee_name: 'Admin System',
+        customer_name: 'Siêu thị Mini Mart',
+        invoice_number: 'PX003',
+        total_amount: 75000,
+        notes: 'Khách lẻ',
+        status: 'pending',
+        created_at: '2024-07-17T11:45:00Z',
+        details: [
+            {
+                id: 4,
+                product_id: 5,
+                product_name: 'Bánh mì sandwich',
+                product_code: 'BREAD001',
+                quantity: 3,
+                unit_price: 25000,
+                total_price: 75000
+            }
+        ]
+    },
+    {
+        id: 4,
+        employee_id: 2,
+        employee_name: 'Nguyễn Thị Hoa',
+        customer_name: 'Cửa hàng ABC',
+        invoice_number: 'PX004',
+        total_amount: 1250000,
+        notes: 'Khách lẻ',
+        status: 'completed',
+        created_at: '2024-07-17T16:20:00Z',
+        details: [
+            {
+                id: 5,
+                product_id: 4,
+                product_name: 'Nồi cơm điện Sharp',
+                product_code: 'RICE001',
+                quantity: 1,
+                unit_price: 1200000,
+                total_price: 1200000
+            },
+            {
+                id: 6,
+                product_id: 3,
+                product_name: 'Bút bi Thiên Long',
+                product_code: 'PEN001',
+                quantity: 10,
+                unit_price: 3000,
+                total_price: 30000
+            },
+            {
+                id: 7,
+                product_id: 5,
+                product_name: 'Bánh mì sandwich',
+                product_code: 'BREAD001',
+                quantity: 1,
+                unit_price: 25000,
+                total_price: 25000
+            }
+        ]
+    },
+    {
+        id: 5,
+        employee_id: 1,
+        employee_name: 'Admin System',
+        customer_name: 'Nguyễn Văn A',
+        invoice_number: 'PX005',
+        total_amount: 90000,
+        notes: 'Khách lẻ',
+        status: 'cancelled',
+        created_at: '2024-07-17T18:30:00Z',
+        details: [
+            {
+                id: 8,
+                product_id: 2,
+                product_name: 'Cà phê hòa tan G7',
+                product_code: 'COFFEE001',
+                quantity: 2,
+                unit_price: 45000,
+                total_price: 90000
+            }
+        ]
+    }
+];
+
+// Utility functions cho Stock Out
+export const getStockOutStatusText = (status) => {
+    switch(status) {
+        case 'pending':
+            return 'Đang xử lý';
+        case 'completed':
+            return 'Hoàn thành';
+        case 'cancelled':
+            return 'Đã hủy';
+        default:
+            return 'Không xác định';
+    }
+};
+
+export const getStockOutStatusColor = (status) => {
+    switch(status) {
+        case 'pending':
+            return 'warning';
+        case 'completed':
+            return 'success';
+        case 'cancelled':
+            return 'danger';
+        default:
+            return 'primary';
+    }
+};
+
+// Thống kê nhanh cho Stock Out
+export const getStockOutStats = () => {
+    const totalRecords = stockOutRecords.length;
+    const totalAmount = stockOutRecords.reduce((sum, record) => sum + record.total_amount, 0);
+    const todayRecords = stockOutRecords.filter(record => {
+        const today = new Date();
+        const recordDate = new Date(record.created_at);
+        return recordDate.toDateString() === today.toDateString();
+    }).length;
+
+    const completedRecords = stockOutRecords.filter(record => record.status === 'completed').length;
+    const pendingRecords = stockOutRecords.filter(record => record.status === 'pending').length;
+    const cancelledRecords = stockOutRecords.filter(record => record.status === 'cancelled').length;
+
+    return {
+        totalRecords,
+        totalAmount,
+        todayRecords,
+        completedRecords,
+        pendingRecords,
+        cancelledRecords
+    };
+};
+
+// Lấy top khách hàng
+export const getTopCustomers = () => {
+    const customerStats = {};
+
+    stockOutRecords.forEach(record => {
+        if (record.status === 'completed') {
+            if (!customerStats[record.customer_name]) {
+                customerStats[record.customer_name] = {
+                    name: record.customer_name,
+                    totalAmount: 0,
+                    totalOrders: 0
+                };
+            }
+            customerStats[record.customer_name].totalAmount += record.total_amount;
+            customerStats[record.customer_name].totalOrders += 1;
+        }
+    });
+
+    return Object.values(customerStats)
+        .sort((a, b) => b.totalAmount - a.totalAmount)
+        .slice(0, 5);
+};
+
+// Thống kê theo nhân viên
+export const getEmployeeStats = () => {
+    const employeeStats = {};
+
+    stockOutRecords.forEach(record => {
+        if (record.status === 'completed') {
+            if (!employeeStats[record.employee_id]) {
+                employeeStats[record.employee_id] = {
+                    employee_id: record.employee_id,
+                    employee_name: record.employee_name,
+                    totalAmount: 0,
+                    totalOrders: 0
+                };
+            }
+            employeeStats[record.employee_id].totalAmount += record.total_amount;
+            employeeStats[record.employee_id].totalOrders += 1;
+        }
+    });
+
+    return Object.values(employeeStats)
+        .sort((a, b) => b.totalAmount - a.totalAmount);
+};

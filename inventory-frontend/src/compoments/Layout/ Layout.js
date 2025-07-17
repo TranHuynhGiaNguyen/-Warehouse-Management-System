@@ -14,6 +14,7 @@ import Dashboard from '../Dashboard/Dashboard';
 import Products from '../../ pages/Products/Product';
 import Categories from '../../ pages/Categories/Categories';
 import StockIn from '../../ pages/Stock/StockIn';
+import StockOut from '../../ pages/Stock/StockOut';
 import './Layout.css';
 
 const Layout = () => {
@@ -40,6 +41,8 @@ const Layout = () => {
                 return <Categories />;
             case 'stock-in':
                 return <StockIn />;
+            case 'stock-out':
+                return <StockOut />;
             default:
                 return <Dashboard />;
         }
