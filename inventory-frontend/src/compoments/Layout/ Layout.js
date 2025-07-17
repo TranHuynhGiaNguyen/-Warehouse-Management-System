@@ -13,6 +13,7 @@ import Header from '../Header/Header';
 import Dashboard from '../Dashboard/Dashboard';
 import Products from '../../ pages/Products/Product';
 import Categories from '../../ pages/Categories/Categories';
+import StockIn from '../../ pages/Stock/StockIn';
 import './Layout.css';
 
 const Layout = () => {
@@ -37,6 +38,8 @@ const Layout = () => {
                 return <Products />;
             case 'categories':
                 return <Categories />;
+            case 'stock-in':
+                return <StockIn />;
             default:
                 return <Dashboard />;
         }
