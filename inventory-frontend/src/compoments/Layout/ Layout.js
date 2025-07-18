@@ -15,6 +15,7 @@ import Products from '../../ pages/Products/Product';
 import Categories from '../../ pages/Categories/Categories';
 import StockIn from '../../ pages/Stock/StockIn';
 import StockOut from '../../ pages/Stock/StockOut';
+import Reports from '../../ pages/Reports/Reports';
 import './Layout.css';
 
 const Layout = () => {
@@ -43,6 +44,8 @@ const Layout = () => {
                 return <StockIn />;
             case 'stock-out':
                 return <StockOut />;
+            case 'reports':
+                return <Reports />;
             default:
                 return <Dashboard />;
         }
