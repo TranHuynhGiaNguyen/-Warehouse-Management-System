@@ -19,7 +19,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, activeMenu, setActiveMenu }) => 
         { id: 'stock-in', label: 'Nhập hàng', icon: TrendingUp },
         { id: 'stock-out', label: 'Xuất hàng', icon: ShoppingCart },
         { id: 'reports', label: 'Báo cáo', icon: FileText },
-        { id: 'suppliers', label: 'Nhà cung cấp', icon: Users }
     ];
 
     const handleMenuClick = (menuId) => {

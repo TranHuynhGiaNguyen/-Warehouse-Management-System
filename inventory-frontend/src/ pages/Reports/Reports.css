@@ -26,20 +26,7 @@
 
 .reports__actions {
     display: flex;
-    gap: 12px;
-}
-
-.btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
+    gap: 22px;
 }
 
 .btn--primary {

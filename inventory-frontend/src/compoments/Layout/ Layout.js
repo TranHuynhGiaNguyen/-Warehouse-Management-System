@@ -16,6 +16,7 @@ import Categories from '../../ pages/Categories/Categories';
 import StockIn from '../../ pages/Stock/StockIn';
 import StockOut from '../../ pages/Stock/StockOut';
 import Reports from '../../ pages/Reports/Reports';
+import LoginForm from '../LoginForm/LoginForm';
 import './Layout.css';
 
 const Layout = () => {
@@ -29,7 +30,6 @@ const Layout = () => {
         { id: 'stock-in', label: 'Nhập hàng', icon: TrendingUp },
         { id: 'stock-out', label: 'Xuất hàng', icon: ShoppingCart },
         { id: 'reports', label: 'Báo cáo', icon: FileText },
-        { id: 'suppliers', label: 'Nhà cung cấp', icon: Users }
     ];
 
     const renderContent = () => {
