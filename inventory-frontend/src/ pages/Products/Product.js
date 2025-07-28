@@ -140,7 +140,7 @@ const Products = () => {
                     </p>
                 </div>
                 <div className="btn-conteiner">
-                    <a className="btn-content" href="#">
+                    <a className="btn-content" onClick={handleAddProduct}>
                         <span className="btn-title">THÊM SẢN PHẨM</span>
                         <span className="icon-arrow">
           <svg

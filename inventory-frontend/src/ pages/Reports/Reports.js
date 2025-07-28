@@ -168,7 +168,7 @@ const Reports = () => {
                         </a>
                     </div>
                     <div className="btn-conteiner">
-                        <a className="btn-content" href="#">
+                        <a className="btn-content" >
                             <span className="btn-title">TẠO BÁO CÁO</span>
                             <span className="icon-arrow">
           <svg

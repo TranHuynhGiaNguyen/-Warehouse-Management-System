@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
     Package,
     ShoppingCart,
@@ -11,19 +12,30 @@ import {
 } from 'lucide-react';
 import './Sidebar.css';
 
-const Sidebar = ({ sidebarOpen, setSidebarOpen, activeMenu, setActiveMenu }) => {
+const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
+    const navigate = useNavigate();
+    const location = useLocation();
+
     const menuItems = [
-        { id: 'dashboard', label: 'Tổng quan', icon: Home },
-        { id: 'products', label: 'Sản phẩm', icon: Package },
-        { id: 'categories', label: 'Danh mục', icon: Settings },
-        { id: 'stock-in', label: 'Nhập hàng', icon: TrendingUp },
-        { id: 'stock-out', label: 'Xuất hàng', icon: ShoppingCart },
-        { id: 'reports', label: 'Báo cáo', icon: FileText },
+        { id: 'dashboard', label: 'Tổng quan', icon: Home, path: '/' },
+        { id: 'products', label: 'Sản phẩm', icon: Package, path: '/products' },
+        { id: 'categories', label: 'Danh mục', icon: Settings, path: '/categories' },
+        { id: 'stock-in', label: 'Nhập hàng', icon: TrendingUp, path: '/stock-in' },
+        { id: 'stock-out', label: 'Xuất hàng', icon: ShoppingCart, path: '/stock-out' },
+        { id: 'reports', label: 'Báo cáo', icon: FileText, path: '/reports' },
     ];
 
-    const handleMenuClick = (menuId) => {
-        setActiveMenu(menuId);
+    const handleMenuClick = (path) => {
+        navigate(path);
         setSidebarOpen(false);
+    };
+
+    // Kiểm tra menu item nào đang active dựa trên URL hiện tại
+    const isActiveMenu = (path) => {
+        if (path === '/') {
+            return location.pathname === '/';
+        }
+        return location.pathname.startsWith(path);
     };
 
     return (
@@ -48,9 +60,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, activeMenu, setActiveMenu }) => 
                         return (
                             <button
                                 key={item.id}
-                                onClick={() => handleMenuClick(item.id)}
+                                onClick={() => handleMenuClick(item.path)}
                                 className={`sidebar__menu-item ${
-                                    activeMenu === item.id ? 'sidebar__menu-item--active' : ''
+                                    isActiveMenu(item.path) ? 'sidebar__menu-item--active' : ''
                                 }`}
                             >
                                 <Icon size={20} className="sidebar__menu-icon" />

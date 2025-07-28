@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import {
     Plus,
     Search,
@@ -121,7 +122,7 @@ const Categories = () => {
                     </p>
                 </div>
                 <div className="btn-conteiner">
-                    <a className="btn-content" href="#">
+                    <a className="btn-content" onClick={handleAddCategory}>
                         <span className="btn-title">THÊM DANH MỤC</span>
                         <span className="icon-arrow">
           <svg

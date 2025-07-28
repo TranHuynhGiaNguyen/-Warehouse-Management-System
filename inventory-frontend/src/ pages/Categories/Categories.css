@@ -149,11 +149,6 @@
     color: var(--error-600);
 }
 
-.categories__action-btn--delete:hover {
-    background-color: var(--error-100);
-    color: var(--error-700);
-}
-
 .categories__card-content {
     padding: 0 1.5rem 1.5rem 1.5rem;
 }
