@@ -1,20 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Quản Lý Kho</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý tồn kho</title>
+
+    <!-- CSS chung -->
+    <link rel="stylesheet" href="assets/css/style.css?v=1">
+    <link rel="stylesheet" href="assets/css/header.css?v=1">
+
+    <!-- CSS thành phần -->
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-<header>
-    <h1>📦 Hệ Thống Quản Lý Kho</h1>
-    <nav>
-        <a href="/index.php">Trang chủ</a> |
-        <a href="/products/list.php">Sản phẩm</a> |
-        <a href="/stock/stock_in.php">Nhập kho</a> |
-        <a href="/stock/stock_out.php">Xuất kho</a> |
-        <a href="/stock/report.php">Báo cáo</a> |
-        <a href="/logout.php">Đăng xuất</a>
-    </nav>
-</header>
-<main>
+    <div class="layout">
+        <div class="main-content">
+            <header class="main-header">
+                <div class="logo">📦 Inventory</div>
+                <nav class="main-nav">
+                    <a href="index.php" class="active">Trang chủ</a>
+                </nav>
+                <div class="user-info">
+                    <span>Xin chào, Admin</span>
+                </div>
+            </header>
+            <main class="container">
