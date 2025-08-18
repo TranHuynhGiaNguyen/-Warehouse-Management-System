@@ -1,74 +1,142 @@
-/* Reset */
+/* Reset và base styles */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  font-family: 'Inter', sans-serif;
-  background-color: #121212;
-  color: #fff;
+    font-family: 'Inter', sans-serif;
+    background-color: #121212;
+    color: #fff;
 }
 
 /* ----- Layout tổng: Sidebar + Main ----- */
 .layout {
-  display: flex;
-  min-height: 100vh;
-  background: #121212;
+    display: flex;
+    min-height: 100vh;
+    background: #121212;
 }
 
 /* ----- Main content ----- */
 .main-content {
-  flex: 1; /* Chiếm toàn bộ không gian còn lại */
-  display: flex;
-  flex-direction: column;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .container {
-  padding: 20px;
-  overflow-y: auto;
-  flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
 }
 
 .section {
-  margin-bottom: 24px;
+    margin-bottom: 24px;
 }
 
-.header h2 {
-  margin-bottom: 20px;
-  color: #1db954;
+/* Page header */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-/* ----- Bảng tồn kho ----- */
+.page-header h2 {
+    margin-bottom: 20px;
+    color: #1db954;
+}
+
+/* ----- Buttons ----- */
+.btn {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background 0.2s;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: #1db954;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: #1ed760;
+}
+
+/* ----- Forms ----- */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 400px;
+}
+
+.form label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    display: block;
+    color: #fff;
+}
+
+.form input {
+    padding: 10px;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background: #181818;
+    color: #fff;
+    width: 100%;
+}
+
+.form input:focus {
+    outline: none;
+    border-color: #1db954;
+    box-shadow: 0 0 5px rgba(29, 185, 84, 0.3);
+}
+
+/* ----- Tables ----- */
 .inventory-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: #181818;
-  border-radius: 10px;
-  overflow: hidden;
+    width: 100%;
+    border-collapse: collapse;
+    background: #181818;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 .inventory-table th,
 .inventory-table td {
-  padding: 12px 15px;
-  text-align: left;
+    padding: 12px 15px;
+    text-align: left;
 }
 
 .inventory-table th {
-  background: #282828;
-  color: #1db954;
-  font-weight: 600;
+    background: #282828;
+    color: #1db954;
+    font-weight: 600;
 }
 
 .inventory-table tr {
-  border-bottom: 1px solid #333;
+    border-bottom: 1px solid #333;
 }
 
 .inventory-table tr:hover {
-  background: #2a2a2a;
+    background: #2a2a2a;
 }
 
 .inventory-table tbody tr:last-child {
-  border-bottom: none;
+    border-bottom: none;
+}
+
+.inventory-table a {
+    color: #1db954;
+    text-decoration: none;
+}
+
+.inventory-table a:hover {
+    color: #1ed760;
 }

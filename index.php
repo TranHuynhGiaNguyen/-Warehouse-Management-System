@@ -28,8 +28,7 @@ $result = $conn->query("SELECT * FROM products");
                 <div class="logo">📦 Inventory</div>
                 <nav class="main-nav">
                     <a href="index.php" class="active">Trang chủ</a>
-                    <a href="add.php">Thêm sản phẩm</a>
-                    <a href="report.php">Báo cáo</a>
+               
                 </nav>
                 <div class="user-info">
                     <span>Xin chào, Admin</span>
