@@ -1,0 +1,86 @@
+    .filters {
+      background: #282828;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      align-items: end;
+    }
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .filter-group label {
+      margin-bottom: 5px;
+      font-size: 14px;
+      color: #b3b3b3;
+    }
+    .filter-group select,
+    .filter-group input {
+      padding: 8px;
+      border: 1px solid #333;
+      border-radius: 4px;
+      background: #181818;
+      color: #fff;
+    }
+    .transaction-in {
+      color: #1db954;
+    }
+    .transaction-out {
+      color: #ff6b35;
+    }
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .pagination a,
+    .pagination span {
+      padding: 8px 12px;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #b3b3b3;
+      text-decoration: none;
+      background: #181818;
+    }
+    .pagination a:hover {
+      background: #1db954;
+      color: white;
+    }
+    .pagination .current {
+      background: #1db954;
+      color: white;
+    }
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .summary-card {
+      background: #181818;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      border-left: 4px solid #1db954;
+    }
+    .summary-card.out {
+      border-left-color: #ff6b35;
+    }
+    .summary-number {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1db954;
+    }
+    .summary-card.out .summary-number {
+      color: #ff6b35;
+    }
+    .summary-label {
+      font-size: 12px;
+      color: #b3b3b3;
+      margin-top: 5px;
+    }

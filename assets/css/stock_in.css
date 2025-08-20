@@ -1,0 +1,35 @@
+   .product-info {
+      background: #282828;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border-left: 4px solid #1db954;
+    }
+    .current-stock {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1db954;
+    }
+    select {
+      padding: 10px;
+      border: 1px solid #333;
+      border-radius: 4px;
+      background: #181818;
+      color: #fff;
+      width: 100%;
+    }
+    option {
+      background: #181818;
+      color: #fff;
+    }
+    textarea {
+      padding: 10px;
+      border: 1px solid #333;
+      border-radius: 4px;
+      background: #181818;
+      color: #fff;
+      width: 100%;
+      min-height: 80px;
+      resize: vertical;
+      font-family: inherit;
+    }

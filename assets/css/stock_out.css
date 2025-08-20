@@ -1,0 +1,33 @@
+
+    .product-info {
+      background: #282828;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border-left: 4px solid #ff6b35;
+    }
+    .current-stock {
+      font-size: 18px;
+      font-weight: 600;
+      color: #ff6b35;
+    }
+    select {
+      padding: 10px;
+      border: 1px solid #333;
+      border-radius: 4px;
+      background: #181818;
+      color: #fff;
+      width: 100%;
+    }
+    option {
+      background: #181818;
+      color: #fff;
+    }
+    .quantity-warning {
+      color: #ffa500;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+    input[type="number"]:invalid {
+      border-color: #ff4444;
+    }
