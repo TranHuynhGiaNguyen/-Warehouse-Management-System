@@ -5,6 +5,11 @@ ini_set('display_errors', 1);
 
 include __DIR__ . '/../config.php';
 
+// Kiểm tra kết nối database
+if (!$conn) {
+    die("Lỗi kết nối database: " . mysqli_connect_error());
+}
+
 // Pagination
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $limit = 20;
@@ -47,7 +52,13 @@ if ($date_to) {
 
 $where_clause = count($where_conditions) > 0 ? 'WHERE ' . implode(' AND ', $where_conditions) : '';
 
-// Get transactions
+// Kiểm tra xem bảng stock_transactions có tồn tại không
+$table_check = $conn->query("SHOW TABLES LIKE 'stock_transactions'");
+if (!$table_check || $table_check->num_rows == 0) {
+    die("Bảng 'stock_transactions' không tồn tại. Vui lòng tạo bảng này trước.");
+}
+
+// Get transactions với error handling
 $sql = "SELECT st.*, p.name, p.sku 
         FROM stock_transactions st 
         JOIN products p ON st.product_id = p.id 
@@ -60,13 +71,24 @@ $params[] = $offset;
 $param_types .= 'ii';
 
 $stmt = $conn->prepare($sql);
+if (!$stmt) {
+    die("Lỗi prepare statement: " . $conn->error);
+}
+
 if ($param_types) {
     $stmt->bind_param($param_types, ...$params);
 }
-$stmt->execute();
-$result = $stmt->get_result();
 
-// Get total count for pagination
+if (!$stmt->execute()) {
+    die("Lỗi execute statement: " . $stmt->error);
+}
+
+$result = $stmt->get_result();
+if (!$result) {
+    die("Lỗi get_result: " . $stmt->error);
+}
+
+// Get total count for pagination với error handling
 $count_sql = "SELECT COUNT(*) as total 
               FROM stock_transactions st 
               JOIN products p ON st.product_id = p.id 
@@ -76,18 +98,33 @@ if (count($where_conditions) > 0) {
     $count_params = array_slice($params, 0, -2); // Remove limit and offset
     $count_param_types = substr($param_types, 0, -2);
     $count_stmt = $conn->prepare($count_sql);
+    if (!$count_stmt) {
+        die("Lỗi prepare count statement: " . $conn->error);
+    }
     $count_stmt->bind_param($count_param_types, ...$count_params);
-    $count_stmt->execute();
+    if (!$count_stmt->execute()) {
+        die("Lỗi execute count statement: " . $count_stmt->error);
+    }
     $count_result = $count_stmt->get_result();
+    if (!$count_result) {
+        die("Lỗi get count result: " . $count_stmt->error);
+    }
 } else {
     $count_result = $conn->query($count_sql);
+    if (!$count_result) {
+        die("Lỗi count query: " . $conn->error);
+    }
 }
 
 $total_records = $count_result->fetch_assoc()['total'];
 $total_pages = ceil($total_records / $limit);
 
-// Get products for filter dropdown
-$products_result = $conn->query("SELECT id, name, sku FROM products ORDER BY name");
+// Get products for filter dropdown với error handling
+$products_sql = "SELECT id, name, sku FROM products ORDER BY name";
+$products_result = $conn->query($products_sql);
+if (!$products_result) {
+    die("Lỗi products query: " . $conn->error);
+}
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -100,10 +137,8 @@ $products_result = $conn->query("SELECT id, name, sku FROM products ORDER BY nam
   <link rel="stylesheet" href="../assets/css/header.css?v=<?= time() ?>">
   <link rel="stylesheet" href="../assets/css/sidebar.css?v=<?= time() ?>">
   <link rel="stylesheet" href="../assets/css/products.css?v=<?= time() ?>">
-    <link rel="stylesheet" href="../assets/css/stock_history.css?v=<?= time() ?>">
+  <link rel="stylesheet" href="../assets/css/stock_history.css?v=<?= time() ?>">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  
-
 </head>
 <body>
 
@@ -168,7 +203,7 @@ $products_result = $conn->query("SELECT id, name, sku FROM products ORDER BY nam
 
         <!-- Summary -->
         <?php
-        // Calculate summary for current filters
+        // Calculate summary for current filters với error handling
         $summary_sql = "SELECT 
                           transaction_type,
                           COUNT(*) as count,
@@ -183,19 +218,24 @@ $products_result = $conn->query("SELECT id, name, sku FROM products ORDER BY nam
         
         if (count($where_conditions) > 0) {
             $summary_stmt = $conn->prepare($summary_sql);
-            $summary_stmt->bind_param($summary_param_types, ...$summary_params);
-            $summary_stmt->execute();
-            $summary_result = $summary_stmt->get_result();
+            if ($summary_stmt) {
+                $summary_stmt->bind_param($summary_param_types, ...$summary_params);
+                $summary_stmt->execute();
+                $summary_result = $summary_stmt->get_result();
+            }
         } else {
             $summary_result = $conn->query($summary_sql);
         }
         
         $summary = ['in' => ['count' => 0, 'quantity' => 0], 'out' => ['count' => 0, 'quantity' => 0]];
-        while ($row = $summary_result->fetch_assoc()) {
-            $summary[$row['transaction_type']] = [
-                'count' => $row['count'],
-                'quantity' => $row['total_quantity']
-            ];
+        
+        if (isset($summary_result) && $summary_result) {
+            while ($row = $summary_result->fetch_assoc()) {
+                $summary[$row['transaction_type']] = [
+                    'count' => $row['count'],
+                    'quantity' => $row['total_quantity']
+                ];
+            }
         }
         ?>
 
@@ -248,7 +288,7 @@ $products_result = $conn->query("SELECT id, name, sku FROM products ORDER BY nam
                   <?php endif; ?>
                 </td>
                 <td class="<?= $row['transaction_type'] == 'in' ? 'transaction-in' : 'transaction-out' ?>">
-                  <strong><?= $row['transaction_type'] == 'in' ? '+' : '-' ?><?= $row['quantity'] ?></strong>
+                  <strong><?= $row['transaction_type'] == 'in' ? '+' : '-' ?><?= number_format($row['quantity']) ?></strong>
                 </td>
                 <td><?= htmlspecialchars($row['reason']) ?></td>
                 <td>
@@ -259,7 +299,9 @@ $products_result = $conn->query("SELECT id, name, sku FROM products ORDER BY nam
             <?php endwhile; ?>
           <?php else: ?>
             <tr>
-              <td colspan="7" style="text-align: center; color: #b3b3b3;">Không có giao dịch nào</td>
+              <td colspan="7" style="text-align: center; color: #b3b3b3;">
+                <?= $total_records == 0 ? 'Không có giao dịch nào' : 'Không có dữ liệu phù hợp với bộ lọc' ?>
+              </td>
             </tr>
           <?php endif; ?>
           </tbody>
@@ -288,7 +330,7 @@ $products_result = $conn->query("SELECT id, name, sku FROM products ORDER BY nam
           </div>
           
           <div style="text-align: center; margin-top: 10px; color: #b3b3b3; font-size: 14px;">
-            Hiển thị <?= min($offset + 1, $total_records) ?> - <?= min($offset + $limit, $total_records) ?> của <?= $total_records ?> kết quả
+            Hiển thị <?= min($offset + 1, $total_records) ?> - <?= min($offset + $limit, $total_records) ?> của <?= number_format($total_records) ?> kết quả
           </div>
         <?php endif; ?>
       </div>
