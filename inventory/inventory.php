@@ -117,40 +117,51 @@ while ($row = $result->fetch_assoc()) {
         </div>
 
         <!-- Stats Cards -->
-       <div class="stats-grid">
-  <div class="stat-card success">
-    <div class="stat-number"><?= count($products) ?></div>
-    <div class="stat-label">Tổng sản phẩm</div>
-  </div>
-  <div class="stat-card warning">
-    <div class="stat-number"><?= $low_stock_count ?></div>
-    <div class="stat-label">Cảnh báo tồn kho thấp</div>
-  </div>
-  <div class="stat-card info">
-    <div class="stat-number"><?= array_sum(array_column($products, 'quantity')) ?></div>
-    <div class="stat-label">Tổng số lượng tồn</div>
-  </div>
-  <div class="stat-card danger">
-    <div class="stat-number">
-      <?= number_format(array_sum(array_map(function($p) { return $p['quantity'] * $p['price']; }, $products)), 0, ',', '.') ?> ₫
-    </div>
-    <div class="stat-label">Giá trị tồn kho</div>
-  </div>
-</div>
-
-
-        <!-- Filter Tabs -->
-        <div class="filter-tabs">
-          <a href="?filter=all" class="filter-tab <?= (!isset($_GET['filter']) || $_GET['filter'] == 'all') ? 'active' : '' ?>">
-            Tất cả sản phẩm
+    <div class="stats-grid">
+          <a href="?filter=all" class="stat-card success filter-tab <?= ($_GET['filter'] ?? 'all') == 'all' ? 'active' : '' ?>">
+            <div class="stat-number"><?= count($products) ?></div>
+            <div class="stat-label">Tất cả sản phẩm</div>
           </a>
-          <a href="?filter=low_stock" class="filter-tab <?= (isset($_GET['filter']) && $_GET['filter'] == 'low_stock') ? 'active' : '' ?>">
-            Tồn kho thấp (<?= $low_stock_count ?>)
+          
+          <a href="?filter=low_stock" class="stat-card warning filter-tab <?= ($_GET['filter'] ?? '') == 'low_stock' ? 'active' : '' ?>">
+            <div class="stat-number"><?= $low_stock_count ?></div>
+            <div class="stat-label">Tồn kho thấp</div>
           </a>
-          <a href="?filter=out_of_stock" class="filter-tab <?= (isset($_GET['filter']) && $_GET['filter'] == 'out_of_stock') ? 'active' : '' ?>">
-            Hết hàng
+          
+          <a href="?filter=out_of_stock" class="stat-card danger filter-tab <?= ($_GET['filter'] ?? '') == 'out_of_stock' ? 'active' : '' ?>">
+            <div class="stat-number"><?= array_sum(array_column(array_filter($products, fn($p) => $p['quantity'] == 0), 'quantity')) == 0 ? count(array_filter($products, fn($p) => $p['quantity'] == 0)) : 0 ?></div>
+            <div class="stat-label">Hết hàng</div>
           </a>
+          
+          <div class="stat-card info">
+            <div class="stat-number"><?= number_format(array_sum(array_column($products, 'quantity'))) ?></div>
+            <div class="stat-label">Tổng số lượng tồn</div>
+          </div>
+          
+          <div class="stat-card secondary">
+            <div class="stat-number">
+              <?= number_format(array_sum(array_map(fn($p) => $p['quantity'] * $p['price'], $products)), 0, ',', '.') ?>₫
+            </div>
+            <div class="stat-label">Giá trị tồn kho</div>
+          </div>
         </div>
+                <!-- Filter Menu -->
+        <form method="get" style="margin-bottom: 20px; display:flex; gap:10px; align-items:center;">
+          <!-- Giữ filter cũ (all/low/out) -->
+          <input type="hidden" name="filter" value="<?= htmlspecialchars($_GET['filter'] ?? 'all') ?>">
+
+          <label for="sort" style="color:#ccc;">Sắp xếp theo:</label>
+          <select name="sort" id="sort" onchange="this.form.submit()" 
+                  style="padding:6px 12px; border-radius:6px; background:#111; color:#fff; border:1px solid #444;">
+            <option value="">-- Chọn --</option>
+            <option value="sku" <?= ($_GET['sort'] ?? '')=='sku' ? 'selected' : '' ?>>Mã SKU</option>
+            <option value="name" <?= ($_GET['sort'] ?? '')=='name' ? 'selected' : '' ?>>Tên sản phẩm</option>
+            <option value="quantity" <?= ($_GET['sort'] ?? '')=='quantity' ? 'selected' : '' ?>>Số lượng</option>
+            <option value="value" <?= ($_GET['sort'] ?? '')=='value' ? 'selected' : '' ?>>Giá trị tồn kho</option>
+          </select>
+          
+        </form>
+        
 
         <!-- Inventory Table -->
         <table class="inventory-table">
@@ -162,7 +173,7 @@ while ($row = $result->fetch_assoc()) {
               <th>Tồn kho</th>
               <th>Tồn kho tối thiểu</th>
               <th>Trạng thái</th>
-              <th>Giá trị</th>
+              <th>Tổng Giá trị</th>
               <th>Hành động</th>
             </tr>
           </thead>
@@ -179,6 +190,26 @@ while ($row = $result->fetch_assoc()) {
                       return true;
               }
           });
+          // Sắp xếp theo menu chọn
+          if (!empty($_GET['sort'])) {
+              usort($filtered_products, function($a, $b) {
+                  switch ($_GET['sort']) {
+                      case 'sku':
+                          return strcmp($a['sku'], $b['sku']);
+                      case 'name':
+                          return strcmp($a['name'], $b['name']);
+                      case 'quantity':
+                          return $b['quantity'] <=> $a['quantity']; // giảm dần
+                      case 'value':
+                          $valueA = $a['quantity'] * $a['price'];
+                          $valueB = $b['quantity'] * $b['price'];
+                          return $valueB <=> $valueA; // giảm dần
+                      default:
+                          return 0;
+                  }
+              });
+          }
+
           
           if (count($filtered_products) > 0): ?>
             <?php foreach($filtered_products as $product): ?>
