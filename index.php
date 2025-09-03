@@ -1,5 +1,5 @@
 <?php
-include 'config.php';
+include 'config.php'; //Database connection
 $result = $conn->query("SELECT * FROM products");
 ?>
 <!DOCTYPE html>
