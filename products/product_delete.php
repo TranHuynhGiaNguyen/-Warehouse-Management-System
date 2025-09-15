@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../includes/auth.php'; 
 include __DIR__ . '/../config.php';
 
 // Lấy ID sản phẩm từ URL

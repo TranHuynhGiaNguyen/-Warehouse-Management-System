@@ -1,10 +1,37 @@
 <?php
-include 'config.php';
+session_start(); 
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header("Location: login.php");
+    exit;
+}
+require_once __DIR__ . '/includes/auth.php';
+include 'config.php'; //Database connection
 $result = $conn->query("SELECT * FROM products");
 ?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+<style>
+
+.logout-box h3 {
+  margin-bottom:10px;
+  color:#333;
+}
+.logout-btn {
+  display:inline-block;
+  padding:8px 16px;
+  background:#0dc8e9;
+  color:#fff;
+  font-weight:600;
+  border-radius:6px;
+  text-decoration:none;
+  transition:background 0.3s;
+}
+.logout-btn:hover {
+  background:#099db4;
+}
+
+</style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý tồn kho</title>
@@ -31,8 +58,12 @@ $result = $conn->query("SELECT * FROM products");
                
                 </nav>
                 <div class="user-info">
-                    <span>Xin chào, Admin</span>
+                    <span>Xin chào</span>
                 </div>
+                <div class="logout-box">
+                <a href="logout.php" class="logout-btn">Đăng xuất</a>
+                </div>
+
             </header>
 
             <main class="container">

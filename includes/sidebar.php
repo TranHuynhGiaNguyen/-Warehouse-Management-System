@@ -5,8 +5,8 @@
     <ul class="sidebar-menu">
         <li><a href="/WarehouseManagement/index.php" class="<?= basename($_SERVER['PHP_SELF']) === 'index.php' ? 'active' : '' ?>">🏠 Dashboard</a></li>
         <li><a href="/WarehouseManagement/products/products.php" class="<?= basename($_SERVER['PHP_SELF']) === 'products.php' ? 'active' : '' ?>">📦 Sản phẩm</a></li>
-        <li><a href="/WarehouseManagement/report.php" class="<?= basename($_SERVER['PHP_SELF']) === 'report.php' ? 'active' : '' ?>">📊 Báo cáo</a></li>
-        <li><a href="../inventory/inventory.php" class="<?= strpos($_SERVER['REQUEST_URI'], 'inventory') !== false ? 'active' : '' ?>">📋 Tồn kho</a></li>
+               <li><a href="/WarehouseManagement/report/report.php" class="<?= basename($_SERVER['PHP_SELF']) === 'report.php' ? 'active' : '' ?>">📊 Báo cáo</a></li>
+        <li><a href="/WarehouseManagement/inventory/inventory.php" class="<?= strpos($_SERVER['REQUEST_URI'], 'inventory') !== false ? 'active' : '' ?>">📋Tồn kho</a></li>
         <li><a href="/WarehouseManagement/settings.php" class="<?= basename($_SERVER['PHP_SELF']) === 'settings.php' ? 'active' : '' ?>">⚙️ Cài đặt</a></li>
     </ul>
 </aside>
